@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Questionário UniBRAS</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--fundo:#0b1d33;--card:#12294a;--borda:#27456f;--texto:#e8f0fa;--suave:#9db4d0;--d:#22d3ee;--ok:#34d399;--erro:#f87171;--f:'Poppins',system-ui,Arial,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#0b1d33 radial-gradient(circle at 20% 0,#163a66,#0b1d33 60%);color:var(--texto);font-family:var(--f);display:flex;flex-direction:column;align-items:center;padding:16px}
+.cab{width:100%;max-width:760px;padding:12px 4px;font-size:.9rem;color:var(--suave);display:flex;flex-wrap:wrap;gap:4px 12px;animation:desce .6s both}
+.cab b{color:var(--d)}.cab span{margin-left:auto}
+.card{width:100%;max-width:760px;background:var(--card);border:1px solid var(--borda);border-radius:16px;padding:clamp(18px,4vw,36px);box-shadow:0 20px 50px rgba(0,0,0,.35);animation:sobe .6s both}
+h1{font-size:clamp(1.4rem,4vw,2rem);line-height:1.25;margin:0 0 12px}
+.ok{color:var(--ok)}.suave{color:var(--suave)}
+.btn{display:inline-block;margin-top:20px;padding:12px 28px;border:0;border-radius:10px;background:var(--d);color:#04243a;font:600 1rem var(--f);cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s}
+.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,211,238,.4)}
+.btn:active:not(:disabled){transform:scale(.95)}.btn:disabled{opacity:.4;cursor:not-allowed}
+:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.entrada>*{animation:sobe .6s both}.entrada>:nth-child(2){animation-delay:.15s}.entrada>:nth-child(3){animation-delay:.25s}.entrada>:nth-child(4){animation-delay:.35s}
+.info{font-size:.9rem;color:var(--suave);margin-bottom:8px}
+.barra{height:8px;background:#0b1d33;border-radius:99px;overflow:hidden;margin-bottom:24px}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#0ea5e9,var(--d));border-radius:99px;transition:width .7s ease}
+.perg{animation:entra .6s both}.perg.sai{animation:sai .45s forwards}
+fieldset{border:0;padding:0;margin:0}
+legend{font-size:1.05rem;font-weight:500;line-height:1.6;margin-bottom:18px;padding:0}
+.alt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;margin-bottom:10px;border:2px solid var(--borda);border-radius:12px;cursor:pointer;opacity:0;animation:sobe .5s forwards;animation-delay:calc(var(--i)*.1s + .2s);transition:transform .2s,border-color .2s,background .2s}
+.alt:hover{transform:translateY(-3px);border-color:var(--d);background:#173660}
+.alt input{position:absolute;opacity:0}
+.letra{flex:none;width:28px;height:28px;border-radius:50%;background:var(--borda);display:grid;place-items:center;font-weight:600;font-size:.85rem}
+.txt{font-size:.95rem;line-height:1.5}
+.alt:has(input:checked){border-color:var(--d);background:#173660;animation:sobe .5s forwards,pulso .5s}
+.alt:has(input:checked) .letra{background:var(--d);color:#04243a}
+.alt:has(input:focus-visible){outline:3px solid #fff;outline-offset:2px}
+.acoes{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.voltar{margin-top:20px;padding:12px 20px;border:2px solid var(--borda);border-radius:10px;background:transparent;color:var(--texto);font:500 1rem var(--f);cursor:pointer;transition:transform .2s,border-color .2s}.voltar:hover{border-color:var(--d);transform:translateX(-3px)}.mudo{background:transparent;border:1px solid var(--borda);border-radius:8px;color:var(--texto);padding:2px 8px;cursor:pointer;font-size:1rem}
+.res{text-align:center}
+.anel{--c:var(--ok);width:170px;height:170px;margin:8px auto 20px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--c) calc(var(--p)*1%),#0b1d33 0);animation:gira 1.4s both}
+.rep .anel{--c:var(--erro)}
+.miolo{width:136px;height:136px;border-radius:50%;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.num{font-size:3rem;font-weight:700;line-height:1}
+.selo{display:inline-block;padding:10px 32px;border-radius:10px;font-size:1.5rem;font-weight:700;letter-spacing:.05em;animation:carimbo .6s .5s cubic-bezier(.2,1.6,.4,1) both}
+.apr .selo{background:var(--ok);color:#052e1f;box-shadow:0 0 30px rgba(52,211,153,.6)}
+.rep .selo{background:var(--erro);color:#3b0a0a;animation:carimbo .6s .5s both,shake .5s 1.1s}
+details{text-align:left;margin-top:20px}summary{cursor:pointer;color:var(--d)}
+.rev{margin-top:12px;padding:10px 14px;border-left:4px solid;border-radius:6px;background:#0f2442;font-size:.9rem}
+.rev p{margin:4px 0;color:var(--suave)}.rev.ok{border-color:var(--ok)}.rev.er{border-color:var(--erro)}
+#conf i{position:fixed;top:-20px;width:9px;height:14px;opacity:.9;animation:cai linear forwards;pointer-events:none}
+@keyframes sobe{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes desce{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@keyframes entra{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes sai{to{opacity:0;transform:translateX(-40px)}}
+@keyframes pulso{50%{box-shadow:0 0 0 8px rgba(34,211,238,.25)}}
+@keyframes gira{from{transform:rotate(-120deg) scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes carimbo{from{transform:scale(2.5);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
+@keyframes cai{to{transform:translateY(110vh) rotate(720deg)}}
+@media(max-width:520px){.cab span{margin-left:0}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.alt{opacity:1}}
+</style>
+</head>
+<body>
+<header class="cab"><b>UniBRAS</b> – Centro Universitário – Montes Belos<span>Introdução à Programação Estruturada</span><button id="mudo" class="mudo" aria-label="Ligar ou desligar o som" title="Som">🔊</button></header>
+<main class="card" id="app"></main>
+<div id="conf"></div>
+<script>
+const Q=[
+["Um estudante precisa desenvolver um programa que receba a idade de uma pessoa e informe se ela é maior ou menor de idade. Para isso, o programa deverá receber a idade, verificar uma condição e apresentar uma mensagem correspondente. Considerando os fundamentos de programação estruturada apresentados, a estrutura mais adequada para implementar essa situação é:",["Uma estrutura de repetição, pois a idade deverá ser processada continuamente até que o usuário encerre o programa.","Uma estrutura de decisão, utilizando uma condição que permita escolher entre dois resultados possíveis.","Uma estrutura exclusivamente sequencial, pois qualquer programa deve executar todas as instruções independentemente dos valores recebidos.","Uma estrutura de repetição do tipo FOR, pois toda entrada de dados precisa ser processada por um número determinado de vezes.","Uma estrutura baseada exclusivamente em operadores matemáticos, sem necessidade de utilizar condições lógicas."],1],
+["Em uma pesquisa acadêmica, um estudante deseja desenvolver um pequeno programa para calcular a média de três notas. O programa deverá receber as notas digitadas pelo usuário, realizar o cálculo da média e apresentar o resultado. Considerando o modelo IPO (Input → Processing → Output), a sequência correta das etapas é:",["Processamento → Entrada → Saída.","Saída → Entrada → Processamento.","Entrada → Saída → Processamento.","Entrada → Processamento → Saída.","Saída → Processamento → Entrada"],3],
+["Uma estudante deseja realizar uma pesquisa bibliográfica sobre a utilização de Inteligência Artificial na educação. Entretanto, ela também deseja considerar trabalhos que utilizem o termo Machine Learning, mas não pretende encontrar estudos relacionados à robótica. Para construir uma busca mais adequada, considerando os operadores booleanos apresentados na aula, a expressão mais apropriada é:",['"Inteligência Artificial" AND "Machine Learning" AND "Educação" AND "Robótica"','"Inteligência Artificial" OR "Machine Learning" OR "Educação" OR "Robótica"','"Inteligência Artificial" AND "Machine Learning" AND "Educação" NOT "Robótica"','"Inteligência Artificial" NOT "Machine Learning" OR "Educação" AND "Robótica"','"Inteligência Artificial" NOT "Educação" AND "Machine Learning" OR "Robótica"'],2],
+["Durante uma pesquisa em uma base de dados científica, um estudante utiliza o termo Educ*. O objetivo é recuperar diferentes palavras que possuam a mesma raiz, aumentando a abrangência da pesquisa. Considerando o funcionamento do truncamento apresentado na aula, é correto afirmar que:",['O asterisco determina que somente a palavra exatamente igual a "Educ" seja localizada.',"O asterisco exclui automaticamente todos os termos relacionados à palavra pesquisada.","O truncamento permite recuperar diferentes variações que compartilham a raiz utilizada na pesquisa.","O truncamento deve ser utilizado exclusivamente para pesquisar autores de artigos científicos.","O asterisco substitui os operadores booleanos AND, OR e NOT nas bases científicas."],2],
+["Um estudante universitário precisa analisar diversos artigos científicos para elaborar um trabalho acadêmico. Como possui pouco tempo disponível, ele decide não realizar inicialmente uma leitura completa de todos os textos. De acordo com a estratégia apresentada na aula, qual procedimento é mais adequado?",["Ler integralmente todos os artigos, começando pela metodologia, independentemente da relevância do trabalho.","Ler inicialmente o resumo para realizar um filtro, verificar a conclusão e posteriormente consultar a introdução e a metodologia conforme a necessidade.","Começar exclusivamente pela metodologia, pois ela apresenta todas as informações necessárias para determinar a relevância do artigo.","Ler somente o título dos artigos e utilizar essa informação como suficiente para elaborar a revisão bibliográfica.","Iniciar diretamente pelos resultados, ignorando o resumo, a introdução e a conclusão."],1],
+["Um aluno precisa realizar uma pesquisa científica sobre determinado tema. Inicialmente, pretende obter uma visão geral do assunto e, posteriormente, localizar trabalhos acadêmicos brasileiros, artigos de maior impacto internacional e estudos específicos da área da saúde. Considerando os repositórios apresentados na aula, a estratégia mais adequada seria:",["Utilizar exclusivamente o Google Acadêmico, pois ele substitui todas as demais bases científicas.","Utilizar SciELO para artigos internacionais de maior impacto, BDTD para artigos biomédicos e PubMed para teses brasileiras.","Utilizar Google Acadêmico para uma visão inicial, SciELO/BDTD para produção brasileira e latino-americana, Scopus/Web of Science para literatura internacional e PubMed para saúde e biomedicina.","Utilizar exclusivamente ResearchGate e Academia.edu, pois todas as publicações científicas estão disponíveis gratuitamente nessas plataformas.","Utilizar somente o Portal de Periódicos CAPES, independentemente do assunto ou do objetivo da pesquisa."],2]
+];
+const L=["A","B","C","D","E"],app=document.getElementById("app"),conf=document.getElementById("conf");
+const rm=matchMedia("(prefers-reduced-motion: reduce)").matches,wait=ms=>new Promise(r=>setTimeout(r,rm?0:ms));
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let resp=[],mudo=false;document.getElementById("mudo").onclick=e=>{mudo=!mudo;e.currentTarget.textContent=mudo?"🔇":"🔊"};
+function inicio(){resp=[];conf.innerHTML="";
+app.innerHTML=`<div class="entrada"><h1>Questionário de Programação Estruturada</h1><p class="suave">São 6 perguntas, uma de cada vez. Você pode voltar e mudar uma resposta antes de finalizar.</p><p class="suave">Com 4 acertos ou mais, você é <b class="ok">aprovado</b>.</p><button class="btn" id="ini">Iniciar questionário</button></div>`;
+document.getElementById("ini").onclick=()=>pergunta(0)}
+function pergunta(i){const[q,alts]=Q[i],n=Q.length;
+app.innerHTML=`<div class="info">Pergunta ${i+1} de ${n}</div><div class="barra"><div class="fill" style="width:${i/n*100}%"></div></div>
+<form class="perg"><fieldset><legend>${esc(q)}</legend>${alts.map((t,k)=>`<label class="alt" style="--i:${k}"><input type="radio" name="a" value="${k}"><span class="letra">${L[k]}</span><span class="txt">${esc(t)}</span></label>`).join("")}</fieldset><div class="acoes">${i>0?'<button type="button" class="voltar" id="vb">← Voltar</button>':''}<button class="btn" disabled>${i+1<n?"Próxima":"Finalizar"}</button></div></form>`;
+const f=app.querySelector("form"),b=f.querySelector(".btn"),fill=app.querySelector(".fill");
+requestAnimationFrame(()=>requestAnimationFrame(()=>fill.style.width=(i+1)/n*100+"%"));
+f.onchange=()=>b.disabled=false;if(resp[i]!==undefined){f.a[resp[i]].checked=true;b.disabled=false}const vb=document.getElementById("vb");if(vb)vb.onclick=async()=>{f.classList.add("sai");await wait(450);pergunta(i-1)};
+f.onsubmit=async e=>{e.preventDefault();b.disabled=true;resp[i]=+f.a.value;f.classList.add("sai");await wait(450);i+1<n?pergunta(i+1):resultado()}}
+let ctxA;function som(ok){if(mudo)return;try{ctxA=ctxA||new(window.AudioContext||window.webkitAudioContext)();if(ctxA.state==="suspended")ctxA.resume();const t0=ctxA.currentTime+.05,notas=ok?[523.25,659.25,783.99,1046.5,783.99,1046.5]:[392,349.23,311.13,261.63],dur=ok?.16:.42;notas.forEach((fq,k)=>{const o=ctxA.createOscillator(),g=ctxA.createGain(),t=t0+k*dur;o.type=ok?"triangle":"sine";o.frequency.value=fq;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.2,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+dur*(ok?1.4:1.8));o.connect(g);g.connect(ctxA.destination);o.start(t);o.stop(t+dur*2)})}catch(e){}}
+function resultado(){const n=Q.length,ac=resp.filter((r,i)=>r===Q[i][2]).length,pct=Math.round(ac/n*100),ap=ac>=4;
+app.innerHTML=`<div class="res ${ap?"apr":"rep"}"><div class="anel" style="--p:${pct}"><div class="miolo"><span class="num">0</span><small class="suave">de ${n}</small></div></div>
+<div class="selo">${ap?"APROVADO":"REPROVADO"}</div><p>${ac} acertos · ${n-ac} erros · ${pct}%</p>
+<details><summary>Ver revisão das respostas</summary>${Q.map((q,i)=>{const ok=resp[i]===q[2];return`<div class="rev ${ok?"ok":"er"}"><b>${i+1}. ${ok?"Correta":"Incorreta"}</b><p>Sua resposta: ${L[resp[i]]}) ${esc(q[1][resp[i]])}</p>${ok?"":`<p>Correta: ${L[q[2]]}) ${esc(q[1][q[2]])}</p>`}</div>`}).join("")}</details>
+<button class="btn" id="de">Refazer questionário</button></div>`;
+setTimeout(()=>som(ap),500);const c=app.querySelector(".num");let k=0;const t=setInterval(()=>{c.textContent=k;if(k++>=ac||rm){c.textContent=ac;clearInterval(t)}},120);
+if(ap&&!rm){const cs=["#22d3ee","#34d399","#fbbf24","#f472b6","#60a5fa"];for(let j=0;j<60;j++){const s=document.createElement("i");s.style.cssText=`left:${Math.random()*100}%;background:${cs[j%5]};animation-delay:${Math.random()*1.2}s;animation-duration:${2+Math.random()*2}s`;conf.appendChild(s)}}
+document.getElementById("de").onclick=inicio}
+inicio();
+</script>
+</body>
+</html>
